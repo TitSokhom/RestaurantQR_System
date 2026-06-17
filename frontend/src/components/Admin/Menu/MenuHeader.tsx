@@ -1,21 +1,23 @@
-const MenuHeader = () => {
+interface MenuHeaderProps {
+  onAddClick: () => void;
+}
+
+const MenuHeader: React.FC<MenuHeaderProps> = ({ onAddClick }) => {
   return (
     <div className="flex justify-between items-center">
       <div>
-        <h2 className="text-2xl font-bold">
-          Food Management
-        </h2>
-
-        <p className="text-gray-500">
-          Manage restaurant menu items
-        </p>
+        <h2 className="text-2xl font-bold">Menu Management</h2>
+        <p className="text-gray-500">Manage restaurant categories</p>
       </div>
 
-      <button className="bg-green-700 text-white px-4 py-2 rounded-lg">
-        + Add New Food
+      <button
+        onClick={onAddClick}
+        className="bg-green-700 text-white px-4 py-2 rounded-lg"
+      >
+        + Add New Category
       </button>
     </div>
   );
 };
 
-export default MenuHeader;
+export default MenuHeader

@@ -25,5 +25,6 @@ export const updateCategory = async (
   data: CreateCategoryDto
 ): Promise<Category> => {
   const res = await api.put(`/categories/${id}`, data);
+  console.log(res.data);
   return res.data;
 };

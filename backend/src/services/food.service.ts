@@ -19,10 +19,13 @@ type UpdateFoodDTO = {
 // CREATE
 export const createFood = async (data: CreateFoodDTO) => {
   return prisma.food.create({
-    data,
-    include: {
-      category: true,
-    },
+    data:{
+      name:data.name,
+      description:data.description,
+      price:data.price,
+      image:data.image,
+      categoryId:data.categoryId
+    }
   });
 };
 

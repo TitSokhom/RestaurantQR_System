@@ -30,6 +30,8 @@ model Table {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   orders      Order[]
+
+  @@map("tables")
 }
 
 model Category {
@@ -60,6 +62,8 @@ model Food {
   category    Category         @relation(fields: [categoryId], references: [id])
   ingredients FoodIngredient[]
   orderItems  OrderItem[]
+
+  @@map("foods")
 }
 
 model Order {
@@ -77,6 +81,7 @@ model Order {
 
   @@index([tableId])
   @@index([status])
+  @@map("orders")
 }
 
 model OrderItem {
@@ -91,6 +96,7 @@ model OrderItem {
 
   @@index([orderId])
   @@index([foodId])
+  @@map("orderItems")
 }
 
 model Payment {
@@ -101,6 +107,8 @@ model Payment {
   status    PaymentStatus @default(PENDING)
   createdAt DateTime      @default(now())
   order     Order         @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
 }
 
 model Ingredient {
@@ -110,6 +118,8 @@ model Ingredient {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
   foods     FoodIngredient[]
+
+  @@map("ingredients")
 }
 
 model FoodIngredient {
@@ -122,6 +132,8 @@ model FoodIngredient {
 
   @@index([foodId])
   @@index([ingredientId])
+
+  @@map("foodIngredients")
 }
 
 enum Role {

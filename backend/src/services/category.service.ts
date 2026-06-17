@@ -33,6 +33,9 @@ export const getCategories = async () => {
     include: {
       foods: true,
     },
+    orderBy: {
+      createdAt: "asc",
+    },
   });
 };
 

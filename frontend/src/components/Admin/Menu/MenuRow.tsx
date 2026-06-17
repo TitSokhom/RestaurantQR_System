@@ -1,33 +1,53 @@
-import type { MenuItem } from "../../../types/Menu";
+import type { Food } from "../../../types/Food";
 
 interface Props {
-  item: MenuItem;
+  food: Food;
   onToggleAvailability: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-const MenuRow: React.FC<Props> = ({ item, onToggleAvailability, onDelete }) => {
+const MenuRow: React.FC<Props> = ({
+  food,
+  onToggleAvailability,
+  onDelete,
+}) => {
   return (
     <tr className="border-t">
-      <td className="p-4 font-semibold">{item.name}</td>
 
-      <td>{item.category}</td>
+      {/* FOOD NAME */}
+      <td className="p-4 font-semibold">
+        {food.name}
+      </td>
 
-      <td>${item.price}</td>
+      {/* CATEGORY */}
+      <td className="p-4">
+        {food.category?.name || "No category"}
+      </td>
 
-      <td>
+      {/* PRICE */}
+      <td className="p-4">
+        ${food.price}
+      </td>
+
+      {/* STATUS */}
+      <td className="p-4">
         <input
           type="checkbox"
-          checked={item.availability}
-          onChange={() => onToggleAvailability(item.id)}
+          checked={food.isAvailable}
+          onChange={() => onToggleAvailability(food.id)}
         />
       </td>
 
-      <td className="text-right p-4">
-        <button onClick={() => onDelete(item.id)} className="text-red-500">
+      {/* ACTIONS */}
+      <td className="p-4 text-right">
+        <button
+          onClick={() => onDelete(food.id)}
+          className="text-red-500"
+        >
           🗑
         </button>
       </td>
+
     </tr>
   );
 };
