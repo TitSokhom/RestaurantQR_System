@@ -10,6 +10,7 @@ import OrderPage from "./pages/Admin/OrderPage";
 import InventoryPage from "./pages/Admin/InventoryPage";
 import ReportPage from "./pages/Admin/ReportPage";
 import SettingPage from "./pages/Admin/SettingPage";
+import MenuCustomer from "./pages/Customer/MenuCustomer";
 
 function App() {
   return (
@@ -38,7 +39,8 @@ function App() {
         </Route>
 
         {/* DEFAULT */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* <Route path="/" element={<Navigate to="/login" />} /> */}
+        <Route path="menu" element={<MenuCustomer />} />
       </Routes>
     </BrowserRouter>
   );

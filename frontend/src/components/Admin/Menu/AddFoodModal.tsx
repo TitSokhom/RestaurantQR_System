@@ -3,7 +3,7 @@ import { X, Upload, Save, Star } from "lucide-react";
 import { getCategories } from "../../../services/category.Service";
 import type { AddFoodModalProps, FoodFormState } from "../../../types/Food";
 
-const API_BASE_URL = "http://localhost:5001";
+//const API_BASE_URL = "http://localhost:5001";
 
 const AddFoodModal: React.FC<AddFoodModalProps> = ({
   isOpen,
@@ -65,9 +65,7 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
       image: null,
     });
 
-    setImagePreview(
-      food.image ? `${API_BASE_URL}/uploads/${food.image}` : null,
-    );
+    setImagePreview(food.image || null);
   }, [food]);
 
   // Reset form when modal closes

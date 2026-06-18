@@ -29,6 +29,7 @@ import {
   updateFood,
 } from "../../../services/food.Service";
 import type { Food } from "../../../types/Food";
+import { uploadToCloudinary } from "../../../utils/cloudinary";
 //import type { Food } from "../../../types/Food";
 
 const MenuManagement: React.FC = () => {
@@ -108,31 +109,45 @@ const MenuManagement: React.FC = () => {
   };
 
   const handleSaveFood = async (data: any) => {
-    //const file = data.image;
+  try {
+    let imageUrl = editingFood?.image || "";
+
+    if (data.image instanceof File) {
+      imageUrl = await uploadToCloudinary(data.image);
+    }
+
     const payload = {
       name: data.foodName,
       description: data.description,
       price: Number(data.price),
       categoryId: data.categoryId,
-      image: data.image?.name || "",
-      //image: file?.name || "", 
+      image: imageUrl,
       isAvailable: data.isFeatured,
     };
 
     if (editingFood) {
-      const updated = await updateFood(editingFood.id, payload);
+      const updated = await updateFood(
+        editingFood.id,
+        payload
+      );
 
       setFoods((prev) =>
-        prev.map((f) => (f.id === editingFood.id ? updated : f)),
+        prev.map((f) =>
+          f.id === editingFood.id ? updated : f
+        )
       );
     } else {
       const created = await createFood(payload);
+
       setFoods((prev) => [created, ...prev]);
-      console.log("STEP 4", created);
     }
+
     setIsFoodModalOpen(false);
     setEditingFood(null);
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
   const handleDeleteFood = async (id: string) => {
     await deleteFood(id);
     setFoods((prev) => prev.filter((f) => f.id !== id));

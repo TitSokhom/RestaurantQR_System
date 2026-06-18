@@ -1,10 +1,13 @@
 
+import type { Food } from "./Food";
+
 export interface Category {
   id: string;
   name: string;
-  icon: string | null;
-  description: string | null;
+  icon: string;
+  description: string;
   isPublished: boolean;
+  foods: Food[];
 }
 
 export interface CreateCategoryDto {

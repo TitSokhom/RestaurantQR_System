@@ -11,7 +11,7 @@ export const createTable = async (tableNumber: number) => {
   });
 
   // 2. Generate QR URL
-  const qrUrl = `http://localhost:3000/menu?table=${table.id}`;
+  const qrUrl = `http://localhost:5001/menu?table=${table.id}`;
   //  const qrUrl = `http://localhost:3000/api/order?table=${table.id}`;
   // 3. Convert URL → QR image (base64)
   const qrCode = await QRCode.toDataURL(qrUrl);

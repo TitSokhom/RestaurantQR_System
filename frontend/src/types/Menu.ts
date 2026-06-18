@@ -1,22 +1,47 @@
 
-export type MenuCategory = 'Main Course' | 'Beverages' | 'Desserts' | 'Appetizers';
+export interface CartItem {
+  id: string;
+  menuItemId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  customizations?: string[];
+}
 
-export interface MenuItem {
+// export interface Category {
+//   id: CategoryId;
+//   label: string;
+//   count: number;
+// }
+
+export interface HeaderProps {
+  tableNumber: string;
+  onSearchChange: (query: string) => void;
+  onNotificationClick: () => void;
+  hasUnreadNotifications: boolean;
+  currentUser: {
+    name: string;
+    avatarUrl: string;
+    isGuest: boolean;
+  };
+}
+
+export interface Food {
   id: string;
   name: string;
   description: string;
-  category: MenuCategory;
-  price: number;
-  availability: boolean;
-  imageUrl: string;
+  price: string;
+  image: string;
+  isAvailable: boolean;
+  categoryId: string;
 }
 
-export interface FoodDTO {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  price: number;
-  availability: boolean;
-  imageUrl: string;
-}
+// export interface Category {
+//   id: string;
+//   name: string;
+//   icon: string;
+//   description: string;
+//   isPublished: boolean;
+//   foods: Food[];
+// }
