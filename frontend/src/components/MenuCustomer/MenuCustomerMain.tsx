@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import MenuCustomerContent from "./MenuCustomerContent";
 import MenuCustomerHeader from "./MenuCustomerHeader";
@@ -7,6 +6,7 @@ import Invoice from "./Invoice";
 
 import { getCategories } from "../../services/category.Service";
 import type { Category } from "../../types/Category";
+import { Menu } from "lucide-react";
 
 export interface CartItem {
   id: string;
@@ -18,12 +18,16 @@ export interface CartItem {
 }
 
 function MenuCustomerMain() {
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-2">
+    <Menu />
+  </button>;
 
   useEffect(() => {
     loadCategories();
@@ -45,9 +49,7 @@ function MenuCustomerMain() {
 
       if (existingItem) {
         return prev.map((p) =>
-          p.id === item.id
-            ? { ...p, quantity: p.quantity + 1 }
-            : p
+          p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p,
         );
       }
 
@@ -59,10 +61,8 @@ function MenuCustomerMain() {
   const handleIncrease = (id: string) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+      ),
     );
   };
 
@@ -71,25 +71,18 @@ function MenuCustomerMain() {
     setCartItems((prev) =>
       prev
         .map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
         )
-        .filter((item) => item.quantity > 0)
+        .filter((item) => item.quantity > 0),
     );
   };
 
   // Remove Item
   const handleRemove = (id: string) => {
-    setCartItems((prev) =>
-      prev.filter((item) => item.id !== id)
-    );
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const cartCount = cartItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
@@ -98,6 +91,7 @@ function MenuCustomerMain() {
         tableNumber="12"
         cartCount={cartCount}
         onCartClick={() => setIsInvoiceOpen(true)}
+        onMenuClick={() => setIsSidebarOpen(true)}
       />
 
       {/* Body */}
@@ -106,6 +100,8 @@ function MenuCustomerMain() {
           categories={categories}
           selected={selectedCategory}
           onSelect={setSelectedCategory}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
         />
 
         <MenuCustomerContent

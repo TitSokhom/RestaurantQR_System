@@ -1,22 +1,25 @@
-import { Armchair, ShoppingCart } from "lucide-react";
+import { Armchair, Menu, ShoppingCart } from "lucide-react";
 
 interface Props {
   tableNumber: string;
   cartCount: number;
   onCartClick: () => void;
+  onMenuClick: () => void;
 }
 
 function MenuCustomerHeader({
   tableNumber,
   cartCount,
   onCartClick,
+  onMenuClick,
 }: Props) {
   return (
     <header className="flex justify-between items-center px-6 py-3 bg-white border-b">
       <div className="flex gap-4 items-center">
-        <h1 className="text-emerald-600 font-bold">
-          GastroAdmin
-        </h1>
+        <button onClick={onMenuClick} className="md:hidden">
+          <Menu size={22} />
+        </button>
+        <h1 className="text-emerald-600 font-bold">GastroAdmin</h1>
 
         <div className="flex items-center gap-1 bg-amber-400 text-white px-3 py-1 rounded-full">
           <Armchair size={16} />
