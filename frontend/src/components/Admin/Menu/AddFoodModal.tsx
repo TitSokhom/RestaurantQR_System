@@ -3,8 +3,6 @@ import { X, Upload, Save, Star } from "lucide-react";
 import { getCategories } from "../../../services/category.Service";
 import type { AddFoodModalProps, FoodFormState } from "../../../types/Food";
 
-//const API_BASE_URL = "http://localhost:5001";
-
 const AddFoodModal: React.FC<AddFoodModalProps> = ({
   isOpen,
   onClose,
@@ -26,7 +24,6 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  // Cleanup blob URLs
   useEffect(() => {
     return () => {
       if (imagePreview?.startsWith("blob:")) {
@@ -127,7 +124,8 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log("FORM DATA:", formData);
+  console.log("IMAGE FILE:", formData.image);
     onSave(formData);
 
     onClose();
@@ -226,7 +224,9 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
           />
 
           {/* Featured */}
-          <div className="flex items-center justify-between border p-3 rounded-lg">
+          <div className="flex items-center justify-between border p-3 rounded-lg"
+          onClick={handleToggle}
+          >
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-yellow-500" />
               <span>Featured</span>
@@ -234,7 +234,7 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
 
             <button
               type="button"
-              onClick={handleToggle}
+              //onClick={handleToggle}
               className={`w-10 h-5 rounded-full transition ${
                 formData.isFeatured ? "bg-green-500" : "bg-gray-300"
               }`}

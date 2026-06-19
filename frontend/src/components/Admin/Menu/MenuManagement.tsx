@@ -30,7 +30,6 @@ import {
 } from "../../../services/food.Service";
 import type { Food } from "../../../types/Food";
 import { uploadToCloudinary } from "../../../utils/cloudinary";
-//import type { Food } from "../../../types/Food";
 
 const MenuManagement: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -49,8 +48,8 @@ const MenuManagement: React.FC = () => {
     setIsFoodModalOpen(true);
   };
   const handleEditFood = (food: Food) => {
-    setEditingFood(food); // set data to edit
-    setIsFoodModalOpen(true); // open modal
+    setEditingFood(food);
+    setIsFoodModalOpen(true);
   };
   const closeFoodModal = () => setIsFoodModalOpen(false);
   const [editingFood, setEditingFood] = useState<Food | null>(null);
@@ -108,10 +107,11 @@ const MenuManagement: React.FC = () => {
     );
   };
 
-  const handleSaveFood = async (data: any) => {
+const handleSaveFood = async (data: any) => {
   try {
-    let imageUrl = editingFood?.image || "";
+    let imageUrl = data.existingImage || "";
 
+    // upload new image only if user selected file
     if (data.image instanceof File) {
       imageUrl = await uploadToCloudinary(data.image);
     }
@@ -126,24 +126,18 @@ const MenuManagement: React.FC = () => {
     };
 
     if (editingFood) {
-      const updated = await updateFood(
-        editingFood.id,
-        payload
-      );
+      const updated = await updateFood(editingFood.id, payload);
 
       setFoods((prev) =>
-        prev.map((f) =>
-          f.id === editingFood.id ? updated : f
-        )
+        prev.map((f) => (f.id === editingFood.id ? updated : f)),
       );
     } else {
       const created = await createFood(payload);
-
       setFoods((prev) => [created, ...prev]);
     }
 
-    setIsFoodModalOpen(false);
     setEditingFood(null);
+    setIsFoodModalOpen(false);
   } catch (error) {
     console.error(error);
   }

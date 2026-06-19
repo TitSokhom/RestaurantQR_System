@@ -1,6 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-// GET ALL FOODS
 export const getFoods = async () => {
   const res = await fetch(`${API_URL}/foods`);
 
@@ -11,42 +10,19 @@ export const getFoods = async () => {
   return res.json();
 };
 
-// CREATE FOOD
-// export const createFood = async (data: any) => {
-//    console.log("API SEND 👉", data);
-//   const res = await fetch(`${API_URL}/foods`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   if (!res.ok) {
-//     throw new Error("Failed to create food");
-//   }
-
-//   return res.json();
-// };
 export const createFood = async (data: any) => {
-  const formData = new FormData();
-
-  formData.append("foodName", data.foodName);
-  formData.append("categoryId", data.categoryId);
-  formData.append("price", data.price);
-  formData.append("description", data.description);
-  formData.append("isFeatured", data.isFeatured);
-
-  if (data.image) {
-    formData.append("image", data.image);
-  }
-
+  console.log("API SEND 👉", data);
   const res = await fetch(`${API_URL}/foods`, {
     method: "POST",
-    body: formData, // ❗ NO JSON
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed");
+  if (!res.ok) {
+    throw new Error("Failed to create food");
+  }
 
   return res.json();
 };

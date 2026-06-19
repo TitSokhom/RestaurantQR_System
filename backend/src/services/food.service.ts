@@ -1,13 +1,5 @@
 import prisma from "../config/prisma";
 
-type CreateFoodDTO = {
-  name: string;
-  description?: string;
-  price: number;
-  image?: string;
-  categoryId: string;
-};
-
 type UpdateFoodDTO = {
   name?: string;
   description?: string;
@@ -16,16 +8,25 @@ type UpdateFoodDTO = {
   categoryId?: string;
 };
 
-// CREATE
+type CreateFoodDTO = {
+  name: string;
+  description?: string;
+  price: number;
+  image?: string;
+  categoryId: string;
+  isAvailable?: boolean;
+};
+
 export const createFood = async (data: CreateFoodDTO) => {
   return prisma.food.create({
-    data:{
-      name:data.name,
-      description:data.description,
-      price:data.price,
-      image:data.image,
-      categoryId:data.categoryId
-    }
+    data: {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      image: data.image,
+      categoryId: data.categoryId,
+      isAvailable: data.isAvailable ?? true,
+    },
   });
 };
 

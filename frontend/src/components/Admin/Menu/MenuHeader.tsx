@@ -14,7 +14,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({ onAddClick }) => {
         onClick={onAddClick}
         className="bg-green-700 text-white px-4 py-2 rounded-lg"
       >
-        + Add New Category
+        + Add New Food
       </button>
     </div>
   );

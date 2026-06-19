@@ -1,7 +1,5 @@
 import { UtensilsCrossed } from "lucide-react";
-//import type { CategoryId } from "../../types/Menu";
 import type { Category } from "../../types/Category";
-//import type { CategoryId } from "../../types/Menu";
 
 interface Props {
   categories: Category[];

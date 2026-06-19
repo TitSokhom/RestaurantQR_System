@@ -31,9 +31,7 @@ const MenuTable: React.FC<MenuTableProps> = ({
 
   return (
     <div className="w-full overflow-hidden rounded-2xl border bg-white">
-
       <table className="w-full text-left">
-
         {/* HEADER */}
         <thead>
           <tr className="bg-emerald-50/40 text-xs font-bold uppercase text-emerald-800 border-b">
@@ -47,41 +45,32 @@ const MenuTable: React.FC<MenuTableProps> = ({
 
         {/* BODY */}
         <tbody className="divide-y">
-
           {items.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50 transition">
-
               {/* ITEM */}
               <td className="px-6 py-4">
                 <div className="flex items-center gap-4">
-
                   <img
-                    src={
-                      item.image ||
-                      "https://via.placeholder.com/80"
-                    }
+                    src={item.image}
+                    alt={item.name}
                     className="w-12 h-12 rounded-xl object-cover border"
                   />
-
                   <div>
-                    <h4 className="font-semibold text-gray-800">
-                      {item.name}
-                    </h4>
+                    <h4 className="font-semibold text-gray-800">{item.name}</h4>
 
                     <p className="text-xs text-gray-500">
                       {item.description || "No description"}
                     </p>
                   </div>
-
                 </div>
               </td>
 
               {/* CATEGORY */}
               <td className="px-6 py-4">
                 <span
-                  className={`px-3 py-1 text-xs font-semibold rounded-full border ${
-                    getCategoryBadgeStyles(item.category?.name)
-                  }`}
+                  className={`px-3 py-1 text-xs font-semibold rounded-full border ${getCategoryBadgeStyles(
+                    item.category?.name,
+                  )}`}
                 >
                   {item.category?.name || "No category"}
                 </span>
@@ -111,7 +100,6 @@ const MenuTable: React.FC<MenuTableProps> = ({
               {/* ACTIONS */}
               <td className="px-6 py-4 text-center">
                 <div className="flex justify-center gap-3">
-
                   <button
                     onClick={() => onEdit?.(item)}
                     className="p-1.5 hover:bg-emerald-50 rounded-lg"
@@ -125,17 +113,12 @@ const MenuTable: React.FC<MenuTableProps> = ({
                   >
                     <Trash2 className="w-4 h-4 text-red-500" />
                   </button>
-
                 </div>
               </td>
-
             </tr>
           ))}
-
         </tbody>
-
       </table>
-
     </div>
   );
 };

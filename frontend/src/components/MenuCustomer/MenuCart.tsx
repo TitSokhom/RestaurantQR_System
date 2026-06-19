@@ -16,7 +16,7 @@ function MenuCart({
 }: MenuCartProps) {
   return (
     <div className="bg-white rounded-2xl shadow-sm border flex flex-col h-full overflow-hidden">
-      <img src={image} className="h-48 w-full object-cover" />
+      <img src={image} className="h-48 w-full object-cover" alt={name} />
 
       <div className="p-4 flex flex-col flex-1">
         <div className="mb-2">

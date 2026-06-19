@@ -9,12 +9,6 @@ export interface CartItem {
   customizations?: string[];
 }
 
-// export interface Category {
-//   id: CategoryId;
-//   label: string;
-//   count: number;
-// }
-
 export interface HeaderProps {
   tableNumber: string;
   onSearchChange: (query: string) => void;
@@ -36,12 +30,3 @@ export interface Food {
   isAvailable: boolean;
   categoryId: string;
 }
-
-// export interface Category {
-//   id: string;
-//   name: string;
-//   icon: string;
-//   description: string;
-//   isPublished: boolean;
-//   foods: Food[];
-// }

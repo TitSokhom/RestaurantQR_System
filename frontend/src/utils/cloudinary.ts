@@ -1,34 +1,20 @@
-const CLOUD_NAME = "dvozxoxm2";
-const UPLOAD_PRESET = "restaurant-qr-system";//ml_default restaurant-qr-system
-
-export const uploadToCloudinary = async (
-  file: File
-): Promise<string> => {
-  if (!file) {
-    throw new Error("No file selected");
-  }
-
+export const uploadToCloudinary = async (file: File) => {
   const formData = new FormData();
 
   formData.append("file", file);
-  formData.append("upload_preset", UPLOAD_PRESET);
+  formData.append("upload_preset", "restaurant-qr-system");
 
   const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    "https://api.cloudinary.com/v1_1/dvozxoxm2/image/upload",
     {
       method: "POST",
       body: formData,
     }
   );
 
-  const result = await response.json();
+  const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(
-      result.error?.message ||
-      "Cloudinary upload failed"
-    );
-  }
+  console.log("Cloudinary response:", data);
 
-  return result.secure_url;
+  return data.secure_url;
 };

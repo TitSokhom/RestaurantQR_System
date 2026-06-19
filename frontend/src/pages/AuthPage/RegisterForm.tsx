@@ -136,7 +136,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
             >
               <option value="WAITER">Waiter</option>
               <option value="CHEF">Chef</option>
-              <option value="MANAGER">CASHIER</option>
+              <option value="CASHIER">Cashier</option>
               <option value="ADMIN">Admin</option>
             </select>
           </div>
