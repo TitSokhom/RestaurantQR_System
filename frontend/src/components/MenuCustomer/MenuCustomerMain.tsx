@@ -7,6 +7,9 @@ import Invoice from "./Invoice";
 import { getCategories } from "../../services/category.Service";
 import type { Category } from "../../types/Category";
 import PaymentModalMain from "../PaymentModel/PaymentModelMain";
+import { useParams } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_API_URL;
 export interface CartItem {
   id: string;
   name: string;
@@ -17,7 +20,17 @@ export interface CartItem {
 }
 
 function MenuCustomerMain() {
-  let TableNumber = 12;
+  const { tableId } = useParams();
+  const [tableNumber, setTableNumber] = useState<number>();
+  useEffect(() => {
+    if (!tableId) return;
+
+    fetch(`${API_URL}/tables/${tableId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTableNumber(data.tableNumber);
+      });
+  }, [tableId]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -87,7 +100,7 @@ function MenuCustomerMain() {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       <MenuCustomerHeader
-        tableNumber={TableNumber}
+        tableNumber={tableNumber ?? 0}
         cartCount={cartCount}
         onCartClick={() => setIsInvoiceOpen(true)}
         onMenuClick={() => setIsSidebarOpen(true)}
@@ -127,7 +140,7 @@ function MenuCustomerMain() {
         isOpen={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
         items={cartItems}
-        tableNumber={TableNumber}
+        tableNumber={tableNumber ?? 0}
         onPaymentSuccess={handlePaymentSuccess}
       />
     </div>
