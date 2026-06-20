@@ -1,7 +1,7 @@
 import { Armchair, Menu, ShoppingCart } from "lucide-react";
 
 interface Props {
-  tableNumber: string;
+  tableNumber: number;
   cartCount: number;
   onCartClick: () => void;
   onMenuClick: () => void;

@@ -46,6 +46,23 @@ export const findOne = async(req:Request<Params>,res:Response)=>{
   const tableById = await tableRepository.findById(req.params.id);
   return res.json(tableById);
 }
+// export const findOne = async (req: Request<Params>, res: Response) => {
+//   try {
+//     const table = await tableRepository.findById(req.params.id);
+
+//     if (!table) {
+//       return res.status(404).json({
+//         message: "Table not found",
+//       });
+//     }
+
+//     return res.json(table);
+//   } catch (error: any) {
+//     return res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
 
 export const remove = async(req: Request<Params>,res:Response)=>{
   await tableRepository.remove(req.params.id);

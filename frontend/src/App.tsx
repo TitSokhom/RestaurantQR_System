@@ -41,6 +41,7 @@ function App() {
         {/* DEFAULT */}
         {/* <Route path="/" element={<Navigate to="/login" />} /> */}
         <Route path="menu" element={<MenuCustomer />} />
+        <Route path="/menu/:id" element={<MenuPage />} />
       </Routes>
     </BrowserRouter>
   );

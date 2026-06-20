@@ -13,12 +13,21 @@ interface InvoiceProps {
   items: CartItem[];
   onClose: () => void;
   isOpen: boolean;
-  onDecrease: (id:string) => void;
-  onIncrease:(id: string) => void;
-  onRemove:(id: string) => void;
+  onDecrease: (id: string) => void;
+  onIncrease: (id: string) => void;
+  onRemove: (id: string) => void;
+  onCheckout: () => void;
 }
 
-function Invoice({ items,onClose,isOpen,onDecrease ,onIncrease,onRemove}: InvoiceProps) {
+function Invoice({
+  items,
+  onClose,
+  isOpen,
+  onDecrease,
+  onIncrease,
+  onRemove,
+  onCheckout,
+}: InvoiceProps) {
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -53,11 +62,23 @@ function Invoice({ items,onClose,isOpen,onDecrease ,onIncrease,onRemove}: Invoic
           className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
         >
           ✕
-        </button>   
+        </button>
       </div>
 
       {/* Cart Items */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {items.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <ShoppingCart size={60} className="text-gray-300 mb-4" />
+
+            <h3 className="font-semibold text-gray-600">Your cart is empty</h3>
+
+            <p className="text-sm text-gray-400 mt-2">
+              Add some delicious food to get started.
+            </p>
+          </div>
+        )}
+        
         {items.map((item) => (
           <div key={item.id} className="flex gap-3 border-b pb-4">
             <img
@@ -85,12 +106,15 @@ function Invoice({ items,onClose,isOpen,onDecrease ,onIncrease,onRemove}: Invoic
 
                   <span className="px-3">{item.quantity}</span>
 
-                  <button className="p-2" onClick={()=> onIncrease(item.id)}>
+                  <button className="p-2" onClick={() => onIncrease(item.id)}>
                     <Plus size={16} />
                   </button>
                 </div>
 
-                <button className="text-red-500 text-sm flex items-center gap-1" onClick={()=>onRemove(item.id)}>
+                <button
+                  className="text-red-500 text-sm flex items-center gap-1"
+                  onClick={() => onRemove(item.id)}
+                >
                   <Trash2 size={14} />
                   Remove
                 </button>
@@ -100,8 +124,9 @@ function Invoice({ items,onClose,isOpen,onDecrease ,onIncrease,onRemove}: Invoic
         ))}
 
         {/* Add More Items */}
-        <button className="w-full border-2 border-dashed rounded-xl py-3 flex items-center justify-center gap-2 text-gray-500 hover:border-emerald-500 hover:text-emerald-500"
-            onClick={onClose}
+        <button
+          className="w-full border-2 border-dashed rounded-xl py-3 flex items-center justify-center gap-2 text-gray-500 hover:border-emerald-500 hover:text-emerald-500"
+          onClick={onClose}
         >
           <Plus size={18} />
           Add more items
@@ -132,7 +157,10 @@ function Invoice({ items,onClose,isOpen,onDecrease ,onIncrease,onRemove}: Invoic
           </div>
         </div>
 
-        <button className="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-semibold">
+        <button
+          className="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-semibold"
+          onClick={onCheckout}
+        >
           Place Order & Pay
         </button>
       </div>

@@ -38,3 +38,42 @@ export const getTables = async () => {
     },
   });
 };
+
+// import QRCode from "qrcode";
+// import prisma from "../config/prisma";
+
+// export const createTable = async (tableNumber: number) => {
+//   // 1. Create table
+//   const table = await prisma.table.create({
+//     data: {
+//       tableNumber,
+//     },
+//   });
+
+//   // 2. Frontend URL (IMPORTANT FIX)
+//   //const qrUrl = `http://localhost:5173/menu/${table.id}`;
+//   const qrUrl = `${process.env.FRONTEND_URL}/menu/${table.id}`;
+
+//   // 3. Generate QR Code
+//   const qrCode = await QRCode.toDataURL(qrUrl);
+
+//   // 4. Update table
+//   const updatedTable = await prisma.table.update({
+//     where: {
+//       id: table.id,
+//     },
+//     data: {
+//       qrCode,
+//     },
+//   });
+
+//   return updatedTable;
+// };
+// // GET ALL TABLES
+// export const getTables = async () => {
+//   return prisma.table.findMany({
+//     orderBy: {
+//       tableNumber: "asc",
+//     },
+//   });
+// };

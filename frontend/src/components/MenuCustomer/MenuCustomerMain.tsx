@@ -6,8 +6,7 @@ import Invoice from "./Invoice";
 
 import { getCategories } from "../../services/category.Service";
 import type { Category } from "../../types/Category";
-import { Menu } from "lucide-react";
-
+import PaymentModalMain from "../PaymentModel/PaymentModelMain";
 export interface CartItem {
   id: string;
   name: string;
@@ -18,16 +17,14 @@ export interface CartItem {
 }
 
 function MenuCustomerMain() {
+  let TableNumber = 12;
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-2">
-    <Menu />
-  </button>;
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   useEffect(() => {
     loadCategories();
@@ -83,17 +80,18 @@ function MenuCustomerMain() {
   };
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const handlePaymentSuccess = () => {
+    setCartItems([]);
+  };
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
-      {/* Header */}
       <MenuCustomerHeader
-        tableNumber="12"
+        tableNumber={TableNumber}
         cartCount={cartCount}
         onCartClick={() => setIsInvoiceOpen(true)}
         onMenuClick={() => setIsSidebarOpen(true)}
       />
-
       {/* Body */}
       <main className="flex flex-1 overflow-hidden">
         <MenuCustomerSidebar
@@ -110,7 +108,6 @@ function MenuCustomerMain() {
           onAddToCart={handleAddToCart}
         />
       </main>
-
       {/* Invoice */}
       {isInvoiceOpen && (
         <Invoice
@@ -120,8 +117,19 @@ function MenuCustomerMain() {
           onDecrease={handleDecrease}
           onIncrease={handleIncrease}
           onRemove={handleRemove}
+          onCheckout={() => {
+            setIsInvoiceOpen(false);
+            setIsPaymentOpen(true);
+          }}
         />
       )}
+      <PaymentModalMain
+        isOpen={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
+        items={cartItems}
+        tableNumber={TableNumber}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 }

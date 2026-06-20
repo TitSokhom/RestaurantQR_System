@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
 import type { Category, CreateCategoryDto } from "../../../types/Category";
-
-import {
-  createCategory,
-  deleteCategory,
-  getCategories,
-  updateCategory,
-} from "../../../services/category.Service";
-
 import MenuHeader from "./MenuHeader";
 import AddCategoryCard from "./AddCategoryCard";
 import CreateCategoryModal from "./CreateCategoryModal";
@@ -30,6 +22,7 @@ import {
 } from "../../../services/food.Service";
 import type { Food } from "../../../types/Food";
 import { uploadToCloudinary } from "../../../utils/cloudinary";
+import { createCategory, deleteCategory, getCategories, updateCategory } from "../../../services/category.Service";
 
 const MenuManagement: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
