@@ -16,6 +16,7 @@ CREATE TYPE "TableStatus" AS ENUM ('AVAILABLE', 'OCCUPIED', 'RESERVED');
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
+    "employeeId" TEXT,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -27,7 +28,7 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "Table" (
+CREATE TABLE "tables" (
     "id" TEXT NOT NULL,
     "tableNumber" INTEGER NOT NULL,
     "qrCode" TEXT,
@@ -35,13 +36,16 @@ CREATE TABLE "Table" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Table_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "tables_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "icon" TEXT,
+    "description" TEXT,
+    "isPublished" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -49,7 +53,7 @@ CREATE TABLE "categories" (
 );
 
 -- CreateTable
-CREATE TABLE "Food" (
+CREATE TABLE "foods" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
@@ -60,11 +64,11 @@ CREATE TABLE "Food" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Food_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "foods_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Order" (
+CREATE TABLE "orders" (
     "id" TEXT NOT NULL,
     "tableId" TEXT NOT NULL,
     "userId" TEXT,
@@ -73,11 +77,11 @@ CREATE TABLE "Order" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "OrderItem" (
+CREATE TABLE "orderItems" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
     "foodId" TEXT NOT NULL,
@@ -85,11 +89,11 @@ CREATE TABLE "OrderItem" (
     "price" DECIMAL(10,2) NOT NULL,
     "subtotal" DECIMAL(10,2) NOT NULL,
 
-    CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "orderItems_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Payment" (
+CREATE TABLE "payments" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
     "amount" DECIMAL(10,2) NOT NULL,
@@ -97,29 +101,32 @@ CREATE TABLE "Payment" (
     "status" "PaymentStatus" NOT NULL DEFAULT 'PENDING',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Payment_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "payments_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Ingredient" (
+CREATE TABLE "ingredients" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "stock" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Ingredient_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ingredients_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "FoodIngredient" (
+CREATE TABLE "foodIngredients" (
     "id" TEXT NOT NULL,
     "foodId" TEXT NOT NULL,
     "ingredientId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
 
-    CONSTRAINT "FoodIngredient_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "foodIngredients_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_employeeId_key" ON "users"("employeeId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
@@ -128,52 +135,52 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE INDEX "users_email_idx" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Table_tableNumber_key" ON "Table"("tableNumber");
+CREATE UNIQUE INDEX "tables_tableNumber_key" ON "tables"("tableNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_name_key" ON "categories"("name");
 
 -- CreateIndex
-CREATE INDEX "Order_tableId_idx" ON "Order"("tableId");
+CREATE INDEX "orders_tableId_idx" ON "orders"("tableId");
 
 -- CreateIndex
-CREATE INDEX "Order_status_idx" ON "Order"("status");
+CREATE INDEX "orders_status_idx" ON "orders"("status");
 
 -- CreateIndex
-CREATE INDEX "OrderItem_orderId_idx" ON "OrderItem"("orderId");
+CREATE INDEX "orderItems_orderId_idx" ON "orderItems"("orderId");
 
 -- CreateIndex
-CREATE INDEX "OrderItem_foodId_idx" ON "OrderItem"("foodId");
+CREATE INDEX "orderItems_foodId_idx" ON "orderItems"("foodId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Payment_orderId_key" ON "Payment"("orderId");
+CREATE UNIQUE INDEX "payments_orderId_key" ON "payments"("orderId");
 
 -- CreateIndex
-CREATE INDEX "FoodIngredient_foodId_idx" ON "FoodIngredient"("foodId");
+CREATE INDEX "foodIngredients_foodId_idx" ON "foodIngredients"("foodId");
 
 -- CreateIndex
-CREATE INDEX "FoodIngredient_ingredientId_idx" ON "FoodIngredient"("ingredientId");
+CREATE INDEX "foodIngredients_ingredientId_idx" ON "foodIngredients"("ingredientId");
 
 -- AddForeignKey
-ALTER TABLE "Food" ADD CONSTRAINT "Food_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "foods" ADD CONSTRAINT "foods_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_tableId_fkey" FOREIGN KEY ("tableId") REFERENCES "Table"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_tableId_fkey" FOREIGN KEY ("tableId") REFERENCES "tables"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orderItems" ADD CONSTRAINT "orderItems_foodId_fkey" FOREIGN KEY ("foodId") REFERENCES "foods"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_foodId_fkey" FOREIGN KEY ("foodId") REFERENCES "Food"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orderItems" ADD CONSTRAINT "orderItems_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Payment" ADD CONSTRAINT "Payment_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payments" ADD CONSTRAINT "payments_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FoodIngredient" ADD CONSTRAINT "FoodIngredient_foodId_fkey" FOREIGN KEY ("foodId") REFERENCES "Food"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "foodIngredients" ADD CONSTRAINT "foodIngredients_foodId_fkey" FOREIGN KEY ("foodId") REFERENCES "foods"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FoodIngredient" ADD CONSTRAINT "FoodIngredient_ingredientId_fkey" FOREIGN KEY ("ingredientId") REFERENCES "Ingredient"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "foodIngredients" ADD CONSTRAINT "foodIngredients_ingredientId_fkey" FOREIGN KEY ("ingredientId") REFERENCES "ingredients"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

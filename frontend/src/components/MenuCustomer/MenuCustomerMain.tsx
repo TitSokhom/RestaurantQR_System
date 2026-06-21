@@ -8,6 +8,7 @@ import { getCategories } from "../../services/category.Service";
 import type { Category } from "../../types/Category";
 import PaymentModalMain from "../PaymentModel/PaymentModelMain";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const API_URL = import.meta.env.VITE_API_URL;
 export interface CartItem {
@@ -131,6 +132,10 @@ function MenuCustomerMain() {
           onIncrease={handleIncrease}
           onRemove={handleRemove}
           onCheckout={() => {
+            if (cartItems.length === 0) {
+              toast.error("Your cart is empty!");
+              return;
+            }
             setIsInvoiceOpen(false);
             setIsPaymentOpen(true);
           }}
