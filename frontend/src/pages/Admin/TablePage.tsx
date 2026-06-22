@@ -1,8 +1,9 @@
+import TableMain from "../../components/Admin/Table/TableMain";
 
 function TablePage() {
   return (
-    <div>TablePage</div>
-  )
+    <TableMain />
+  );
 }
 
-export default TablePage
+export default TablePage;

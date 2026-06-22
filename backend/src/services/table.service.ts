@@ -1,79 +1,74 @@
 import QRCode from "qrcode";
 import prisma from "../config/prisma";
+import { Prisma, TableStatus } from "@prisma/client";
+
+interface CreateTableInput {
+  tableNumber: number;
+  capacity: number;
+  zone: string;
+  status?: TableStatus;
+}
 
 // CREATE TABLE + QR CODE
-export const createTable = async (tableNumber: number) => {
+export const createTable = async (data: CreateTableInput) => {
   // 1. Create table first
   const table = await prisma.table.create({
     data: {
-      tableNumber,
+      tableNumber: data.tableNumber,
+      capacity: data.capacity,
+      zone: data.zone,
+      status: data.status ?? TableStatus.AVAILABLE,
     },
   });
 
   // 2. Generate QR URL
-  const qrUrl = `http://localhost:5001/menu?table=${table.id}`;
-  //  const qrUrl = `http://localhost:3000/api/order?table=${table.id}`;
-  // 3. Convert URL → QR image (base64)
+  const qrUrl = `${process.env.FRONTEND_URL}/menu/${table.id}`;
+
+  // 3. Generate QR Code image (base64)
   const qrCode = await QRCode.toDataURL(qrUrl);
 
-  // 4. Update table with QR
+  // 4. Update table with QR code
   const updatedTable = await prisma.table.update({
-    where: {
-      id: table.id,
-    },
-    data: {
-      qrCode,
-      //qrUrl,
-    },
+    where: { id: table.id },
+    data: { qrCode },
   });
 
   return updatedTable;
 };
 
 // GET ALL TABLES
-export const getTables = async () => {
+export const findAll = async () => {
   return prisma.table.findMany({
-    orderBy: {
-      tableNumber: "asc",
-    },
+    orderBy: { tableNumber: "asc" },
   });
 };
 
-// import QRCode from "qrcode";
-// import prisma from "../config/prisma";
+// GET ONE TABLE BY ID
+export const findById = async (id: string) => {
+  return prisma.table.findUnique({
+    where: { id },
+  });
+};
 
-// export const createTable = async (tableNumber: number) => {
-//   // 1. Create table
-//   const table = await prisma.table.create({
-//     data: {
-//       tableNumber,
-//     },
-//   });
+// DELETE TABLE
+export const remove = async (id: string) => {
+  return prisma.table.delete({
+    where: { id },
+  });
+};
 
-//   // 2. Frontend URL (IMPORTANT FIX)
-//   //const qrUrl = `http://localhost:5173/menu/${table.id}`;
-//   const qrUrl = `${process.env.FRONTEND_URL}/menu/${table.id}`;
 
-//   // 3. Generate QR Code
-//   const qrCode = await QRCode.toDataURL(qrUrl);
-
-//   // 4. Update table
-//   const updatedTable = await prisma.table.update({
-//     where: {
-//       id: table.id,
-//     },
-//     data: {
-//       qrCode,
-//     },
-//   });
-
-//   return updatedTable;
-// };
-// // GET ALL TABLES
-// export const getTables = async () => {
-//   return prisma.table.findMany({
-//     orderBy: {
-//       tableNumber: "asc",
-//     },
-//   });
-// };
+export const update = async (
+  id: string,
+  data: {
+    tableNumber: number;
+    capacity: number;
+    zone: string;
+    status: TableStatus;
+  }
+) => {
+  return prisma.table.update({
+    where: { id },
+    data,
+  });
+};

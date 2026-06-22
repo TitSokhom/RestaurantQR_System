@@ -30,9 +30,9 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/dashboard", dashboardRoute);
 app.use("/api/payments", paymentRoute);
 
-app.use(
-  "/uploads",
-  express.static(path.join(process.cwd(), "uploads"))
-);
+// app.use(
+//   "/uploads",
+//   express.static(path.join(process.cwd(), "uploads"))
+// );
 
 export default app;

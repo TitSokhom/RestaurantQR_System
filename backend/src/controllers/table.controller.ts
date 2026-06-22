@@ -1,70 +1,50 @@
 import { Request, Response } from "express";
 import * as tableService from "../services/table.service";
-import * as tableRepository from "../repositories/table.repository"
+//import * as tableRepository from "../repositories/table.repository";
 
 interface Params {
   id: string;
 }
 
-// CREATE TABLE
-export const create = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const { tableNumber } = req.body;
-
-    const table = await tableService.createTable(
-      tableNumber
-    );
-
-    return res.status(201).json(table);
-  } catch (error: any) {
-    return res.status(400).json({
-      message: error.message,
-    });
-  }
+// CREATE
+export const create = async (req: Request, res: Response) => {
+  const table = await tableService.createTable(req.body)
+  return res.status(201).json(table)
+  
 };
 
-// GET ALL TABLES
-export const findAll = async (
-  _req: Request,
-  res: Response
-) => {
+// GET ALL
+export const findAll = async (_req: Request, res: Response) => {
   try {
-    const tables = await tableService.getTables();
-
+    const tables = await tableService.findAll();
     return res.json(tables);
   } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    });
+    return res.status(500).json({ message: error.message });
   }
 };
 
-export const findOne = async(req:Request<Params>,res:Response)=>{
-  const tableById = await tableRepository.findById(req.params.id);
-  return res.json(tableById);
-}
-// export const findOne = async (req: Request<Params>, res: Response) => {
-//   try {
-//     const table = await tableRepository.findById(req.params.id);
+// GET ONE
+export const findOne = async (req: Request<Params>, res: Response) => {
+  const table = await tableService.findById(req.params.id);
+  return res.json(table);
+};
 
-//     if (!table) {
-//       return res.status(404).json({
-//         message: "Table not found",
-//       });
-//     }
-
-//     return res.json(table);
-//   } catch (error: any) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
-
-export const remove = async(req: Request<Params>,res:Response)=>{
-  await tableRepository.remove(req.params.id);
+// DELETE
+export const remove = async (req: Request<Params>, res: Response) => {
+  await tableService.remove(req.params.id);
   return res.json({ message: "Deleted" });
-}
+};
+
+//UPDATE
+export const update = async (req: Request<Params>, res: Response) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+
+    const result = await tableService.update(id, data);
+
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
