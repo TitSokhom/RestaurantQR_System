@@ -37,9 +37,7 @@ export default function TableGrid({
       </div>
 
       <div className="grid grid-cols-4 gap-6">
-        {/* {filteredTables.map((table) => (
-          <TableCard key={table.id} table={table} />
-        ))} */}
+
         {filteredTables.map((table) => (
           <TableCard
             key={table.id}

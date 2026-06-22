@@ -1,7 +1,5 @@
 
-import { Rss } from "lucide-react";
 import api from "./api";
-const API_URL=import.meta.env.VITE_API_URL
 
 export interface CreateTablePayload {
   tableNumber: string;
@@ -34,41 +32,7 @@ export const createTable = async (data: CreateTablePayload): Promise<Table> => {
 
   return res.data;
 };
-// export const createTable = async (data: CreateTablePayload) => {
-//   try {
-//     console.log("Sending:", data);
 
-//     const res = await api.post("/tables", data);
-
-//     console.log("Response:", res.data);
-//     return res.data;
-
-//   } catch (error: any) {
-//     console.error("CREATE TABLE FAILED ❌");
-
-//     console.error("Message:", error.message);
-//     console.error("Response data:", error.response?.data);
-//     console.error("Status:", error.response?.status);
-
-//     throw error;
-//   }
-// };
-// export const createTable = async (
-//   data: CreateTablePayload,
-// ): Promise<TableItem> => {
-//   const res = await api.post("/tables", data);
-//   console.log(res.data);
-//   return res.data;
-// };
-
-// UPDATE TABLE
-// export const updateTable = async (
-//   id: string,
-//   data: Partial<CreateTablePayload>,
-// ): Promise<Table> => {
-//   const res = await api.put(`/tables/${id}`, data);
-//   return res.data;
-// };
 export const updateTable = async (
   id: string,
   data: {
@@ -77,9 +41,8 @@ export const updateTable = async (
     zone: string;
     status: string;
   }
-) => {//api.get(`/tables/${id}`);
+) => {
   const res = await api.put(`/tables/${id}`, data);
-  console.log(res.data);
   return res.data;
 };
 

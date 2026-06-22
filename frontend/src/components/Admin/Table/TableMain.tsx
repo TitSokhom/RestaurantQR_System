@@ -97,26 +97,6 @@ function TableMain() {
         onDelete={handleDeleteTable}
         onEdit={handleEditTable}
       />
-      {/* <AddNewTableModal
-        //isOpen={isEditOpen}
-        isOpen={isOpen}
-        onClose={() => {
-          setIsEditOpen(false);
-          setIsOpen(false);
-        }}
-        onCreate={handleUpdateTable}
-        mode="edit"
-        initialData={
-          selectedTable
-            ? {
-                tableNumber: selectedTable.tableNumber,
-                capacity: selectedTable.capacity,
-                zone: selectedTable.zone,
-                status: selectedTable.status,
-              }
-            : undefined
-        }
-      /> */}
       <AddNewTableModal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
