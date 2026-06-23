@@ -86,7 +86,7 @@ function TableMain() {
     }
   };
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <TableHeader onAddTable={() => setIsCreateOpen(true)} />
 
       <StatsTracker />
@@ -122,26 +122,6 @@ function TableMain() {
             : undefined
         }
       />
-      {/* <AddNewTableModal
-        isOpen={isCreateOpen || isEditOpen}
-        onClose={() => {
-          setIsCreateOpen(false);
-          setIsEditOpen(false);
-          setSelectedTable(null);
-        }}
-        mode={isEditOpen ? "edit" : "create"}
-        initialData={
-          selectedTable
-            ? {
-                tableNumber: selectedTable.tableNumber,
-                capacity: selectedTable.capacity,
-                zone: selectedTable.zone,
-                status: selectedTable.status,
-              }
-            : undefined
-        }
-      //   onSubmit={mode === "edit" ? handleUpdateTable : handleCreateTable} 
-       />*/}
     </div>
   );
 }

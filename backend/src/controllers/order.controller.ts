@@ -31,6 +31,21 @@ export const create = async (
       message: error.message,
     });
   }
+  try {
+
+  const order = await orderService.createOrder(
+    req.body.tableId,
+    req.body.items
+  );
+
+  res.status(201).json(order);
+} catch (error: any) {
+  console.error("ORDER ERROR:", error);
+
+  res.status(400).json({
+    message: error.message,
+  });
+}
 };
 
 // GET ALL ORDERS

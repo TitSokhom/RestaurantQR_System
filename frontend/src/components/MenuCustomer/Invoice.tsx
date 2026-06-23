@@ -1,4 +1,10 @@
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+// import {
+//   calculateSubtotal,
+//   calculateTotal,
+//   calculateServiceFee,
+//   calculateVAT,
+// } from "../../services/invoice.service";
 
 interface CartItem {
   id: string;
@@ -78,7 +84,7 @@ function Invoice({
             </p>
           </div>
         )}
-        
+
         {items.map((item) => (
           <div key={item.id} className="flex gap-3 border-b pb-4">
             <img
@@ -158,7 +164,8 @@ function Invoice({
         </div>
 
         <button
-          className="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-semibold"
+          type="button"
+          className="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-semibold transition"
           onClick={onCheckout}
         >
           Place Order & Pay

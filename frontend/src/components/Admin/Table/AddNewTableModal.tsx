@@ -36,9 +36,7 @@ export const AddNewTableModal: React.FC<AddNewTableModalProps> = ({
     setStatus("AVAILABLE");
   }
 }, [initialData, isOpen]);
-  // const [tableNumber, setTableNumber] = useState<string>("");
-  // const [capacity, setCapacity] = useState(4);
-  // const [zone, setZone] = useState("Main Hall");
+  
   const [tableNumber, setTableNumber] = useState(
     initialData?.tableNumber ?? "",
   );
@@ -135,7 +133,7 @@ export const AddNewTableModal: React.FC<AddNewTableModalProps> = ({
             >
               <option value="Main Hall">Main Hall</option>
               <option value="Terrace">Terrace</option>
-              <option value="VIP Lounge">VIP Lounge</option>
+              <option value="Private Room">Private Room</option>
             </select>
           </div>
 

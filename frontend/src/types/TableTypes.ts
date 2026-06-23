@@ -3,12 +3,6 @@ export type TableStatus =
   | "RESERVED"
   | "OCCUPIED";
  
-// export type ZoneFilter =
-//   | "All Zones"
-//   | "Main Hall"
-//   | "Terrace"
-//   | "Private Room";
-
 export interface TableItem {
   id: string;
   name: string;
@@ -28,12 +22,3 @@ export type TableZone =
   | "Window Side";
 
 export type ZoneFilter = "All Zones" | TableZone;
-
-// export interface TableItem {
-//   id: string;
-//   name: string;
-//   zone: TableZone;
-//   seats: number;
-//   status: TableStatus;
-//   previewUrl: string;
-// }

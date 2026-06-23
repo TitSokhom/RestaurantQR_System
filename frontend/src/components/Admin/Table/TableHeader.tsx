@@ -8,7 +8,7 @@ function TableHeader({ onAddTable }: TableHeaderProps) {
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full bg-transparent ">
       {/* Title and Description */}
       <div className="space-y-1">
-        <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
+        <h2 className="text-2xl font-bold">
           Table Management
         </h2>
         <p className="text-sm md:text-base text-slate-500 font-normal">

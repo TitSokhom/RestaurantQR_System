@@ -9,8 +9,10 @@ import type { Category } from "../../types/Category";
 import PaymentModalMain from "../PaymentModel/PaymentModelMain";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { createOrder } from "../../services/invoice.service";
 
 const API_URL = import.meta.env.VITE_API_URL;
+
 export interface CartItem {
   id: string;
   name: string;
@@ -39,6 +41,8 @@ function MenuCustomerMain() {
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadCategories();
@@ -93,10 +97,44 @@ function MenuCustomerMain() {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const handlePaymentSuccess = () => {
-    setCartItems([]);
+  const handlePlaceOrder = async () => {
+    if (cartItems.length === 0) {
+      toast.error("Cart is empty");
+      return;
+    }
+
+    try {
+      setLoading(true);
+  
+       const order= await createOrder({
+        tableId: tableId!,
+        items: cartItems.map((item) => ({
+          foodId: item.id,
+          foodName:item.name,
+          quantity: item.quantity,
+        })),
+      });
+
+      setCurrentOrder(order);
+
+      setIsInvoiceOpen(false);
+      setIsPaymentOpen(true);
+
+      toast.success("Order sent to kitchen!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to place order");
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handlePaymentSuccess = () => {
+  setCartItems([]);
+  setCurrentOrder(null);
+};
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
@@ -123,7 +161,7 @@ function MenuCustomerMain() {
         />
       </main>
       {/* Invoice */}
-      {isInvoiceOpen && (
+      {/* {isInvoiceOpen && (
         <Invoice
           items={cartItems}
           onClose={() => setIsInvoiceOpen(false)}
@@ -139,6 +177,17 @@ function MenuCustomerMain() {
             setIsInvoiceOpen(false);
             setIsPaymentOpen(true);
           }}
+        />
+      )} */}
+      {isInvoiceOpen && (
+        <Invoice
+          items={cartItems}
+          onClose={() => setIsInvoiceOpen(false)}
+          isOpen={isInvoiceOpen}
+          onDecrease={handleDecrease}
+          onIncrease={handleIncrease}
+          onRemove={handleRemove}
+          onCheckout={handlePlaceOrder}
         />
       )}
       <PaymentModalMain

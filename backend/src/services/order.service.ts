@@ -1,14 +1,20 @@
 import prisma from "../config/prisma";
 import { Prisma } from "@prisma/client";
 
-interface OrderItemInput {
+export interface CreateOrderItem {
   foodId: string;
   quantity: number;
 }
 
+export interface CreateOrderPayload {
+  tableId: string;
+  userId?: string;
+  items: CreateOrderItem[];
+}
+
 export const createOrder = async (
   tableId: string,
-  items: OrderItemInput[],
+  items: CreateOrderItem[],
   userId?: string
 ) => {
   let totalPrice = new Prisma.Decimal(0);
@@ -33,6 +39,7 @@ export const createOrder = async (
     orderItems.push({
       foodId: food.id,
       quantity: item.quantity,
+      foodName: food.name,
       price: food.price,
       subtotal,
     });
@@ -67,23 +74,6 @@ export const getOrders = async () => {
     },
   });
 };
-
-// export const getInvoice = async (
-//   orderId: string
-// ) => {
-//   return prisma.order.findUnique({
-//     where: { id: orderId },
-//     include: {
-//       table: true,
-//       items: {
-//         include: {
-//           food: true,
-//         },
-//       },
-//       payment: true,
-//     },
-//   });
-// };
 
 export const getInvoice = async (
   orderId: string

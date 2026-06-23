@@ -1,6 +1,6 @@
-export interface Table {
-  id: string;
-  tableNumber: number;
-  status: string;
-  qrCode?: string;
-}
+// export interface Table {
+//   id: string;
+//   tableNumber: number;
+//   status: string;
+//   qrCode?: string;
+// }
