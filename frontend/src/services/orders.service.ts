@@ -2,12 +2,12 @@ import api from "./api";
 
 
 export interface CartItem {
-  id: string; // foodId
+  id: string;
   name: string;
   price: number;
   quantity: number;
-  //image: string;
-  //description?: string;
+  image: string;
+  description?: string;
 }
 
 export interface CreateOrderPayload {

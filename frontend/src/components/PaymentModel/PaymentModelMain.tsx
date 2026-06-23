@@ -9,6 +9,8 @@ import QRPayment from "./QRPayment";
 import WalletPayment from "./WalletPayment";
 import CashierPayment from "./CashierPayment";
 import OrderSummary from "./OrderSummary";
+import { createOrder } from "../../services/orders.service";
+import { createPayment } from "../../services/payment.service";
 
 interface PaymentProps {
   tableNumber: number;
@@ -16,6 +18,8 @@ interface PaymentProps {
   onClose: () => void;
   items: CartItem[];
   onPaymentSuccess: () => void;
+  // tableId: string
+  orderId :string
 }
 
 function PaymentModalMain({
@@ -24,6 +28,8 @@ function PaymentModalMain({
   onClose,
   items,
   onPaymentSuccess,
+  // tableId,
+  orderId,
 }: PaymentProps) {
   const [activeTab, setActiveTab] = useState<PaymentMethod>("card");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -45,16 +51,62 @@ function PaymentModalMain({
   const isCardValid =
     cardName.trim() && cardNumber.trim() && expiry.trim() && cvv.trim();
 
-  const handlePay = () => {
-    if (isProcessing) return;
+//   const handlePay = async () => {
+//     if (isProcessing) return;
 
+//     setIsProcessing(true);
+
+//     try {
+//     // 1. CREATE ORDER FIRST (if not created yet)
+//     const order= await createOrder({
+//         tableId: tableId!,
+//         items: items.map((item) => ({
+//           foodId: item.id,
+//           foodName:item.name,
+//           quantity: item.quantity,
+//         })),
+//       });
+    
+
+//     // 2. CREATE PAYMENT
+//     await createPayment({
+//   orderId: order.id,
+//   amount: total,
+//   method: activeTab === "card" ? "CARD" :
+//           activeTab === "cashier" ? "CASH" :
+//           activeTab === "upi_qr" ? "QR" :
+//           "WALLET",
+// });
+// setIsSuccess(true);
+//     // setTimeout(() => {
+//     //   setIsProcessing(false);
+//     //   setIsSuccess(true);
+//     // }, 1500);
+//   };
+
+  const handlePay = async () => {
+  if (isProcessing) return;
+
+  try {
     setIsProcessing(true);
 
-    setTimeout(() => {
-      setIsProcessing(false);
-      setIsSuccess(true);
-    }, 1500);
-  };
+    await createPayment({
+      orderId: orderId,
+      amount: total,
+      //method: activeTab.toUpperCase(),
+      method: activeTab === "card" ? "CARD" :
+           activeTab === "cashier" ? "CASH" :
+           activeTab === "upi_qr" ? "QR" :
+           "WALLET",
+    });
+
+    setIsSuccess(true);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsProcessing(false);
+  }
+};
 
   if (!isOpen) return null;
 

@@ -9,7 +9,7 @@ import type { Category } from "../../types/Category";
 import PaymentModalMain from "../PaymentModel/PaymentModelMain";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { createOrder } from "../../services/invoice.service";
+import { createOrder } from "../../services/orders.service";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +20,12 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+}
+
+interface Order {
+  id: string;
+  tableId: string;
+  status: string;
 }
 
 function MenuCustomerMain() {
@@ -41,7 +47,7 @@ function MenuCustomerMain() {
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  const [currentOrder, setCurrentOrder] = useState<any>(null);
+  const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -161,24 +167,6 @@ function MenuCustomerMain() {
         />
       </main>
       {/* Invoice */}
-      {/* {isInvoiceOpen && (
-        <Invoice
-          items={cartItems}
-          onClose={() => setIsInvoiceOpen(false)}
-          isOpen={isInvoiceOpen}
-          onDecrease={handleDecrease}
-          onIncrease={handleIncrease}
-          onRemove={handleRemove}
-          onCheckout={() => {
-            if (cartItems.length === 0) {
-              toast.error("Your cart is empty!");
-              return;
-            }
-            setIsInvoiceOpen(false);
-            setIsPaymentOpen(true);
-          }}
-        />
-      )} */}
       {isInvoiceOpen && (
         <Invoice
           items={cartItems}
@@ -192,9 +180,11 @@ function MenuCustomerMain() {
       )}
       <PaymentModalMain
         isOpen={isPaymentOpen}
+        // tableId={tableId ?? ""}
         onClose={() => setIsPaymentOpen(false)}
         items={cartItems}
         tableNumber={tableNumber ?? 0}
+        orderId={currentOrder?.id ?? ""}
         onPaymentSuccess={handlePaymentSuccess}
       />
     </div>
