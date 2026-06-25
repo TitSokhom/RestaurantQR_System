@@ -1,5 +1,6 @@
 import prisma from "../config/prisma";
 import { Prisma } from "@prisma/client";
+import { OrderStatus } from "@prisma/client";
 
 export interface CreateOrderItem {
   foodId: string;
@@ -15,7 +16,7 @@ export interface CreateOrderPayload {
 export const createOrder = async (
   tableId: string,
   items: CreateOrderItem[],
-  userId?: string
+  userId?: string,
 ) => {
   let totalPrice = new Prisma.Decimal(0);
 
@@ -30,9 +31,7 @@ export const createOrder = async (
       throw new Error("Food not found");
     }
 
-    const subtotal = new Prisma.Decimal(food.price).mul(
-      item.quantity
-    );
+    const subtotal = new Prisma.Decimal(food.price).mul(item.quantity);
 
     totalPrice = totalPrice.add(subtotal);
 
@@ -62,22 +61,31 @@ export const createOrder = async (
   return order;
 };
 
+// export const getOrders = async () => {
+//   return prisma.order.findMany({
+//     include: {
+//       table: true,
+//       items: {
+//         include: {
+//           food: true,
+//         },
+//       },
+//     },
+//   });
+// };
 export const getOrders = async () => {
   return prisma.order.findMany({
     include: {
       table: true,
-      items: {
-        include: {
-          food: true,
-        },
-      },
+      payment: true,
+      items:true
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 };
-
-export const getInvoice = async (
-  orderId: string
-) => {
+export const getInvoice = async (orderId: string) => {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: {
@@ -106,4 +114,20 @@ export const getInvoice = async (
       subtotal: item.subtotal,
     })),
   };
+};
+
+export const updateOrderStatus = async (
+  orderId: string,
+  status: OrderStatus,
+) => {
+  console.log("ID:", orderId);
+  console.log("STATUS:", status);
+  return await prisma.order.update({
+    where: {
+      id: orderId,
+    },
+    data: {
+      status,
+    },
+  });
 };

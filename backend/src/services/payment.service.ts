@@ -27,12 +27,12 @@ export const createPayment = async (
   });
 
   // 3. update order status -> PAID
-  await prisma.order.update({
-    where: { id: orderId },
-    data: {
-      status: "PAID",
-    },
-  });
+  // await prisma.order.update({
+  //   where: { id: orderId },
+  //   data: {
+  //     status: "PAID",
+  //   },
+  // });
 
   return payment;
 };

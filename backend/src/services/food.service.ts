@@ -6,6 +6,7 @@ type UpdateFoodDTO = {
   price?: number;
   image?: string;
   categoryId?: string;
+  isAvailable?: boolean;
 };
 
 type CreateFoodDTO = {
@@ -41,6 +42,19 @@ export const getFoods = async () => {
     }
   });
 };
+// export const getFoods = async () => {
+//   return prisma.food.findMany({
+//     where: {
+//       isAvailable: true,
+//     },
+//     include: {
+//       category: true,
+//     },
+//     orderBy: {
+//       createdAt: "desc",
+//     },
+//   });
+// };
 
 // GET BY ID
 export const getFoodById = async (id: string) => {

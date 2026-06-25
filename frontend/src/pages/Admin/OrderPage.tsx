@@ -1,7 +1,11 @@
+//import OrdersAdminMain from "../../components/OrderAdmin/OrdersAdminMain"
+
+import OrderDashboard from "../../components/OrderDashboard/OrderDashboard"
 
 function OrderPage() {
   return (
-    <div>OrderPage</div>
+    // <OrdersAdminMain />
+    <OrderDashboard />
   )
 }
 

@@ -1,6 +1,5 @@
 import api from "./api";
 
-
 export interface CartItem {
   id: string;
   name: string;
@@ -15,7 +14,7 @@ export interface CreateOrderPayload {
   items: {
     foodId: string;
     quantity: number;
-    foodName: string
+    foodName: string;
   }[];
 }
 export const createOrder = async (payload: CreateOrderPayload) => {
@@ -24,10 +23,19 @@ export const createOrder = async (payload: CreateOrderPayload) => {
 };
 
 export const calculateSubtotal = (items: CartItem[]) => {
-  return items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+};
+
+export const getOrders = async () => {
+  const res = await api.get("/orders");
+  return res.data;
+};
+
+export const updateOrderStatus = async (orderId: string, status: string) => {
+  const res = await api.patch(`/orders/${orderId}/status`, {
+    status,
+  });
+  return res.data;
 };
 
 export const calculateServiceFee = (subtotal: number) => subtotal * 0.05;

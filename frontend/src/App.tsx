@@ -11,6 +11,7 @@ import InventoryPage from "./pages/Admin/InventoryPage";
 import ReportPage from "./pages/Admin/ReportPage";
 import SettingPage from "./pages/Admin/SettingPage";
 import MenuCustomer from "./pages/Customer/MenuCustomer";
+import KitchenPage from "./pages/kitchen/KitchenPage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         {/* <Route path="/" element={<Navigate to="/login" />} /> */}
         <Route path="menu" element={<MenuCustomer />} />
         <Route path="/menu/:tableId" element={<MenuCustomer />} />
+        <Route path="/kitchen" element={<KitchenPage />} />
       </Routes>
     </BrowserRouter>
   );

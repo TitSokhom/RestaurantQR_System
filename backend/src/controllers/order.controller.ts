@@ -31,21 +31,6 @@ export const create = async (
       message: error.message,
     });
   }
-  try {
-
-  const order = await orderService.createOrder(
-    req.body.tableId,
-    req.body.items
-  );
-
-  res.status(201).json(order);
-} catch (error: any) {
-  console.error("ORDER ERROR:", error);
-
-  res.status(400).json({
-    message: error.message,
-  });
-}
 };
 
 // GET ALL ORDERS
@@ -65,4 +50,26 @@ export const invoice = async (req: Request<Params>, res: Response) => {
   const invoice = await orderService.getInvoice(req.params.id);
 
   res.json(invoice);
+};
+
+export const updateOrderStatus = async (
+  req: Request<Params>,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const order = await orderService.updateOrderStatus(
+      id,
+      status
+    );
+
+    res.json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to update order status",
+    });
+  }
 };

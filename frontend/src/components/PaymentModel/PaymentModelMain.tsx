@@ -9,7 +9,6 @@ import QRPayment from "./QRPayment";
 import WalletPayment from "./WalletPayment";
 import CashierPayment from "./CashierPayment";
 import OrderSummary from "./OrderSummary";
-import { createOrder } from "../../services/orders.service";
 import { createPayment } from "../../services/payment.service";
 
 interface PaymentProps {
@@ -50,39 +49,6 @@ function PaymentModalMain({
 
   const isCardValid =
     cardName.trim() && cardNumber.trim() && expiry.trim() && cvv.trim();
-
-//   const handlePay = async () => {
-//     if (isProcessing) return;
-
-//     setIsProcessing(true);
-
-//     try {
-//     // 1. CREATE ORDER FIRST (if not created yet)
-//     const order= await createOrder({
-//         tableId: tableId!,
-//         items: items.map((item) => ({
-//           foodId: item.id,
-//           foodName:item.name,
-//           quantity: item.quantity,
-//         })),
-//       });
-    
-
-//     // 2. CREATE PAYMENT
-//     await createPayment({
-//   orderId: order.id,
-//   amount: total,
-//   method: activeTab === "card" ? "CARD" :
-//           activeTab === "cashier" ? "CASH" :
-//           activeTab === "upi_qr" ? "QR" :
-//           "WALLET",
-// });
-// setIsSuccess(true);
-//     // setTimeout(() => {
-//     //   setIsProcessing(false);
-//     //   setIsSuccess(true);
-//     // }, 1500);
-//   };
 
   const handlePay = async () => {
   if (isProcessing) return;

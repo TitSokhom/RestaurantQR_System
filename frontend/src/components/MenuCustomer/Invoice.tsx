@@ -1,10 +1,4 @@
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-// import {
-//   calculateSubtotal,
-//   calculateTotal,
-//   calculateServiceFee,
-//   calculateVAT,
-// } from "../../services/invoice.service";
 
 interface CartItem {
   id: string;
