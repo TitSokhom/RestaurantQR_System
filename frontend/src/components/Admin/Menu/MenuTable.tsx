@@ -6,7 +6,7 @@ interface MenuTableProps {
   items: Food[];
   onEdit?: (item: Food) => void;
   onDelete?: (id: string) => void;
-  onToggleAvailability?: (id: string) => void;
+  onToggleAvailability?: (id: string, currentStatus: boolean) => void;
 }
 
 const MenuTable: React.FC<MenuTableProps> = ({
@@ -84,7 +84,9 @@ const MenuTable: React.FC<MenuTableProps> = ({
               {/* TOGGLE */}
               <td className="px-6 py-4">
                 <button
-                  onClick={() => onToggleAvailability?.(item.id)}
+                  onClick={() =>
+                    onToggleAvailability?.(item.id, item.isAvailable)
+                  }
                   className={`relative inline-flex h-5 w-9 rounded-full transition ${
                     item.isAvailable ? "bg-emerald-600" : "bg-gray-300"
                   }`}

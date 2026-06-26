@@ -22,7 +22,12 @@ import {
 } from "../../../services/food.Service";
 import type { Food } from "../../../types/Food";
 import { uploadToCloudinary } from "../../../utils/cloudinary";
-import { createCategory, deleteCategory, getCategories, updateCategory } from "../../../services/category.Service";
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from "../../../services/category.Service";
 
 const MenuManagement: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -92,49 +97,53 @@ const MenuManagement: React.FC = () => {
 
     setIsCategoryModalOpen(false);
   };
-  const handleToggleFood = (id: string) => {
+  const handleToggleFood = async (id: string, currentStatus: boolean) => {
+    await updateFood(id, {
+    isAvailable: !currentStatus,
+  });
+
     setFoods((prev) =>
-      prev.map((food) =>
-        food.id === id ? { ...food, isAvailable: !food.isAvailable } : food,
+      prev.map((f) =>
+        f.id === id ? { ...f, isAvailable: !f.isAvailable } : f,
       ),
     );
   };
 
-const handleSaveFood = async (data: any) => {
-  try {
-    let imageUrl = data.existingImage || "";
+  const handleSaveFood = async (data: any) => {
+    try {
+      let imageUrl = data.existingImage || "";
 
-    // upload new image only if user selected file
-    if (data.image instanceof File) {
-      imageUrl = await uploadToCloudinary(data.image);
+      // upload new image only if user selected file
+      if (data.image instanceof File) {
+        imageUrl = await uploadToCloudinary(data.image);
+      }
+
+      const payload = {
+        name: data.foodName,
+        description: data.description,
+        price: Number(data.price),
+        categoryId: data.categoryId,
+        image: imageUrl,
+        isAvailable: data.isFeatured,
+      };
+
+      if (editingFood) {
+        const updated = await updateFood(editingFood.id, payload);
+
+        setFoods((prev) =>
+          prev.map((f) => (f.id === editingFood.id ? updated : f)),
+        );
+      } else {
+        const created = await createFood(payload);
+        setFoods((prev) => [created, ...prev]);
+      }
+
+      setEditingFood(null);
+      setIsFoodModalOpen(false);
+    } catch (error) {
+      console.error(error);
     }
-
-    const payload = {
-      name: data.foodName,
-      description: data.description,
-      price: Number(data.price),
-      categoryId: data.categoryId,
-      image: imageUrl,
-      isAvailable: data.isFeatured,
-    };
-
-    if (editingFood) {
-      const updated = await updateFood(editingFood.id, payload);
-
-      setFoods((prev) =>
-        prev.map((f) => (f.id === editingFood.id ? updated : f)),
-      );
-    } else {
-      const created = await createFood(payload);
-      setFoods((prev) => [created, ...prev]);
-    }
-
-    setEditingFood(null);
-    setIsFoodModalOpen(false);
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
   const handleDeleteFood = async (id: string) => {
     await deleteFood(id);
     setFoods((prev) => prev.filter((f) => f.id !== id));

@@ -6,6 +6,7 @@ type CreateCategoryDTO = {
   icon: string | null;
   description: string | null;
   publishImmediately: boolean;
+  isAvailable?: boolean;
 };
 
 type UpdateCategoryDTO = {
@@ -13,6 +14,7 @@ type UpdateCategoryDTO = {
   icon?: string | null;
   description?: string | null;
   publishImmediately?: boolean;
+  isAvailable?: boolean;
 };
 
 // CREATE
@@ -30,12 +32,22 @@ export const createCategory = async (data: CreateCategoryDTO) => {
 // GET ALL
 export const getCategories = async () => {
   return prisma.category.findMany({
+    // include: {
+    //   foods:{
+    //     where:{
+    //       isAvailable:true
+    //     }
+    //   }
+    // },
+    // orderBy: {
+    //   createdAt: "asc",
+    // },
     include: {
-      foods: true,
-    },
-    orderBy: {
-      createdAt: "asc",
-    },
+  foods: {
+    where: { isAvailable: true },
+    orderBy: { createdAt: "desc" },
+  },
+}
   });
 };
 

@@ -19,7 +19,7 @@ const Receipt80mm = ({ order }: Props) => {
       {/* Header */}
       <div className="text-center border-b pb-2 mb-2">
         <h1 className="font-bold text-sm">MY RESTAURANT</h1>
-        <p className="text-[10px]">Tel: 012 345 678</p>
+        <p className="text-[10px]">Tel: 088 7058 904</p>
       </div>
 
       {/* Order Info */}

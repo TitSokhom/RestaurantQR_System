@@ -36,7 +36,6 @@ export const updateFood = async (id: string, data: any) => {
     },
     body: JSON.stringify(data),
   });
-
   if (!res.ok) {
     throw new Error("Failed to update food");
   }

@@ -42,6 +42,7 @@ export const findOne = async (req: Request<{ id: string }>, res: Response) => {
 
 // UPDATE
 export const update = async (req: Request<{ id: string }>, res: Response) => {
+
   try {
     const food = await foodService.updateFood(req.params.id, req.body);
 
