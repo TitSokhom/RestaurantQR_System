@@ -17,6 +17,7 @@ interface InvoiceProps {
   onIncrease: (id: string) => void;
   onRemove: (id: string) => void;
   onCheckout: () => void;
+  loading: boolean;
 }
 
 function Invoice({
@@ -27,6 +28,7 @@ function Invoice({
   onIncrease,
   onRemove,
   onCheckout,
+  loading,
 }: InvoiceProps) {
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -157,12 +159,23 @@ function Invoice({
           </div>
         </div>
 
-        <button
+        {/* <button
           type="button"
           className="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-semibold transition"
           onClick={onCheckout}
         >
           Place Order & Pay
+        </button> */}
+        <button
+          disabled={loading}
+          onClick={onCheckout}
+          className="flex items-center justify-center gap-2 w-full bg-green-600 text-white py-3 rounded-lg disabled:opacity-50"
+        >
+          {loading && (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          )}
+
+          {loading ? "Sending..." : "Checkout"}
         </button>
       </div>
     </aside>

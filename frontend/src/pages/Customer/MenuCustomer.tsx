@@ -195,6 +195,7 @@ function MenuCustomer() {
       {isInvoiceOpen && (
         <Invoice
           items={cartItems}
+          loading={loading}
           onClose={() => setIsInvoiceOpen(false)}
           isOpen={isInvoiceOpen}
           onDecrease={handleDecrease}

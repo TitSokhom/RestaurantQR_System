@@ -13,6 +13,6 @@ router.put("/:id", controller.update);
 
 router.delete("/:id", controller.remove);
 
-router.patch("/:id/status", controller.updateTableStatus)
+router.patch("/:id/status", controller.updateTableStatus);
 
 export default router;

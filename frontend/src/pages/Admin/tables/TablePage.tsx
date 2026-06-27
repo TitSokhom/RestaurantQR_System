@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TableHeader from "../../../pages/Admin/tables/TableHeader";
 import StatsTracker from "../../../pages/Admin/tables/StatsTracker";
 import TableGrid from "./TableGrid";
@@ -21,12 +21,21 @@ function TablePage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const stats = {
-  totalCapacity: tables.length,
-  activeOrders: tables.filter(t => t.status === "OCCUPIED").length,
-  available: tables.filter(t => t.status === "AVAILABLE").length,
-  pendingReservations: tables.filter(t => t.status === "RESERVED").length,
-};
+  // const stats = {
+  //   totalCapacity: tables.length,
+  //   activeOrders: tables.filter((t) => t.status === "OCCUPIED").length,
+  //   available: tables.filter((t) => t.status === "AVAILABLE").length,
+  //   pendingReservations: tables.filter((t) => t.status === "RESERVED").length,
+  // };
+  const stats = useMemo(
+    () => ({
+      totalCapacity: tables.length,
+      activeOrders: tables.filter((t) => t.status === "OCCUPIED").length,
+      available: tables.filter((t) => t.status === "AVAILABLE").length,
+      pendingReservations: tables.filter((t) => t.status === "RESERVED").length,
+    }),
+    [tables],
+  );
 
   // Load tables
   const loadTables = async () => {
@@ -38,10 +47,18 @@ function TablePage() {
     }
   };
 
+  // useEffect(() => {
+  //   loadTables();
+  // }, []);
   useEffect(() => {
     loadTables();
-  }, []);
 
+    const interval = setInterval(() => {
+      loadTables();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   //Create table
   const handleCreateTable = async (tableData: TableData) => {

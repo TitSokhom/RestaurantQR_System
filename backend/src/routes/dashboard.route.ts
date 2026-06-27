@@ -5,4 +5,7 @@ const router = Router();
 
 router.get("/", controller.getDashboardStats);
 
+router.get("/analytics", controller.getDashboardAnalytics);
+
+
 export default router;
