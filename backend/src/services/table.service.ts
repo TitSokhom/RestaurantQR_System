@@ -3,7 +3,7 @@ import prisma from "../config/prisma";
 import { Prisma, TableStatus } from "@prisma/client";
 
 interface CreateTableInput {
-  tableNumber: number;
+  tableNumber: string;
   capacity: number;
   zone: string;
   status?: TableStatus;
@@ -61,7 +61,7 @@ export const remove = async (id: string) => {
 export const update = async (
   id: string,
   data: {
-    tableNumber: number;
+    tableNumber: string;
     capacity: number;
     zone: string;
     status: TableStatus;
@@ -70,5 +70,15 @@ export const update = async (
   return prisma.table.update({
     where: { id },
     data,
+  });
+};
+
+export const updateTable = async (
+  tableId: string,
+  status: "AVAILABLE" | "OCCUPIED"
+) => {
+  return prisma.table.update({
+    where: { id: tableId },
+    data: { status },
   });
 };

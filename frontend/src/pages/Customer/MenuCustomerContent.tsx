@@ -1,5 +1,5 @@
 import type { Props } from "../../types/Food";
-import MenuCart from "./MenuCart";
+import MenuCart from "../../pages/Customer/MenuCart";
 
 function MenuCustomerContent({
   categories,

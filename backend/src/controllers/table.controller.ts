@@ -48,3 +48,16 @@ export const update = async (req: Request<Params>, res: Response) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const updateTableStatus = async (req:Request<Params>, res:Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const table = await tableService.updateTable(id, status);
+
+    res.json(table);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update table" });
+  }
+};

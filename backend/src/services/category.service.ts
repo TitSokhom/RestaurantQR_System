@@ -43,11 +43,11 @@ export const getCategories = async () => {
     //   createdAt: "asc",
     // },
     include: {
-  foods: {
-    where: { isAvailable: true },
-    orderBy: { createdAt: "desc" },
-  },
-}
+      foods: {
+        where: { isAvailable: true },
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 };
 

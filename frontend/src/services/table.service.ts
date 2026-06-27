@@ -50,3 +50,15 @@ export const updateTable = async (
 export const deleteTable = async (id: string): Promise<void> => {
   await api.delete(`/tables/${id}`);
 };
+
+export const updateTableStatus = async (
+  tableId: string,
+  status: "AVAILABLE" | "OCCUPIED"
+) => {
+  const res = await api.patch(`/tables/${tableId}/status`, {
+    status,
+  });
+  console.log(res);
+
+  return res.data;
+};

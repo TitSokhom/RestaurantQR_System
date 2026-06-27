@@ -3,6 +3,6 @@ import * as controller from "../controllers/dashboard.controller";
 
 const router = Router();
 
-router.get("/", controller.stats);
+router.get("/", controller.getDashboardStats);
 
 export default router;

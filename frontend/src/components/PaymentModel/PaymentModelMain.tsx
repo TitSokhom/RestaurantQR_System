@@ -1,5 +1,4 @@
 import { useState } from "react";
-//import { Armchair, X } from "lucide-react";
 
 import type { CartItem, PaymentMethod } from "../../types/payment";
 
@@ -27,7 +26,6 @@ function PaymentModalMain({
   onClose,
   items,
   onPaymentSuccess,
-  // tableId,
   orderId,
 }: PaymentProps) {
   const [activeTab, setActiveTab] = useState<PaymentMethod>("card");
@@ -59,11 +57,10 @@ function PaymentModalMain({
     await createPayment({
       orderId: orderId,
       amount: total,
-      //method: activeTab.toUpperCase(),
       method: activeTab === "card" ? "CARD" :
            activeTab === "cashier" ? "CASH" :
-           activeTab === "upi_qr" ? "QR" :
-           "WALLET",
+           activeTab === "upi_qr" ? "KHQR" :
+           "KHQR",
     });
 
     setIsSuccess(true);

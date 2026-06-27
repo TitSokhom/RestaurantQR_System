@@ -22,3 +22,10 @@ export type TableZone =
   | "Window Side";
 
 export type ZoneFilter = "All Zones" | TableZone;
+
+export interface DashboardStats {
+  totalCapacity: number;
+  activeOrders: number;
+  available: number;
+  pendingReservations: number;
+}

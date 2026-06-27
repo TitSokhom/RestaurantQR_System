@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import TableHeader from "./TableHeader";
-import StatsTracker from "./StatsTracker";
+import TableHeader from "../../../pages/Admin/tables/TableHeader";
+import StatsTracker from "../../../pages/Admin/tables/StatsTracker";
 import TableGrid from "./TableGrid";
-import { AddNewTableModal, type TableData } from "./AddNewTableModal";
+import {
+  AddNewTableModal,
+  type TableData,
+} from "../../../pages/Admin/tables/AddNewTableModal";
 import {
   createTable,
   deleteTable,
@@ -11,12 +14,19 @@ import {
 } from "../../../services/table.service";
 import type { TableItem } from "../../../types/TableTypes";
 
-function TableMain() {
+function TablePage() {
   const [isOpen, setIsOpen] = useState(false);
   const [tables, setTables] = useState<any[]>([]);
   const [selectedTable, setSelectedTable] = useState<TableItem | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const stats = {
+  totalCapacity: tables.length,
+  activeOrders: tables.filter(t => t.status === "OCCUPIED").length,
+  available: tables.filter(t => t.status === "AVAILABLE").length,
+  pendingReservations: tables.filter(t => t.status === "RESERVED").length,
+};
 
   // Load tables
   const loadTables = async () => {
@@ -31,6 +41,7 @@ function TableMain() {
   useEffect(() => {
     loadTables();
   }, []);
+
 
   //Create table
   const handleCreateTable = async (tableData: TableData) => {
@@ -76,7 +87,6 @@ function TableMain() {
     try {
       await deleteTable(id);
 
-      // Reload tables
       await loadTables();
 
       alert("Table deleted successfully");
@@ -89,7 +99,7 @@ function TableMain() {
     <div className="space-y-6">
       <TableHeader onAddTable={() => setIsCreateOpen(true)} />
 
-      <StatsTracker />
+      <StatsTracker stats={stats} />
 
       <TableGrid
         tables={tables}
@@ -126,4 +136,4 @@ function TableMain() {
   );
 }
 
-export default TableMain;
+export default TablePage;

@@ -1,4 +1,4 @@
-import type { Order } from "../../types/Order";
+import type { Order } from "../../../types/Order";
 import OrderRow from "./OrderRow";
 import OrdersHeader from "./OrdersHeader";
 import { useEffect } from "react";

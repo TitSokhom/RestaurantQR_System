@@ -1,10 +1,10 @@
 import { useState } from "react";
+import TableViewToggle from "../../../pages/Admin/tables/TableViewToggle";
+import type { TableItem, ZoneFilter } from "../../../types/TableTypes";
 import TableFilters from "./TableFilters";
-import TableViewToggle from "./TableViewToggle";
+import TableCard from "./TableCard";
 import CreateTableCard from "./CreateTableCard";
 import TableFooter from "./TableFooter";
-import type { TableItem, ZoneFilter } from "../../../types/TableTypes";
-import TableCard from "./TableCard";
 
 interface TableGridProps {
   tables: TableItem[];

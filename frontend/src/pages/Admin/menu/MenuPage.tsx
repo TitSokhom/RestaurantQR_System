@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Category, CreateCategoryDto } from "../../../types/Category";
-import MenuHeader from "./MenuHeader";
-import AddCategoryCard from "./AddCategoryCard";
-import CreateCategoryModal from "./CreateCategoryModal";
-import AddFoodModal from "./AddFoodModal";
+import MenuHeader from "../../../pages/Admin/menu/MenuHeader";
+import AddCategoryCard from "../../../pages/Admin/menu/AddCategoryCard";
+import CreateCategoryModal from "../../../pages/Admin/menu/CreateCategoryModal";
+import AddFoodModal from "../../../pages/Admin/menu/AddFoodModal";
 
 import {
   Cake,
@@ -13,7 +13,7 @@ import {
   UtensilsCrossed,
   Wine,
 } from "lucide-react";
-import MenuTable from "./MenuTable";
+import MenuTable from "../../../pages/Admin/menu/MenuTable";
 import {
   createFood,
   deleteFood,
@@ -29,7 +29,7 @@ import {
   updateCategory,
 } from "../../../services/category.Service";
 
-const MenuManagement: React.FC = () => {
+const MenuPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
@@ -228,4 +228,4 @@ const MenuManagement: React.FC = () => {
   );
 };
 
-export default MenuManagement;
+export default MenuPage;

@@ -1,29 +1,28 @@
 import { useEffect, useState } from "react";
-import OrderSummaryCard from "./OrderSummaryCard";
+import type { Order } from "../../../types/Order";
+import { getOrders } from "../../../services/orders.service";
 import Header from "./Header";
-import { getOrders } from "../../services/orders.service";
-import type { Order } from "../../types/Order";
 import OrdersTable from "./OrdersTable";
+import OrderSummaryCard from "./OrderSummaryCard";
 
-const OrderDashboard = () => {
+const OrderPage = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-
     const fetchOrder = async () => {
-    try {
-      const data = await getOrders();
+      try {
+        const data = await getOrders();
 
-      setOrders(data);
+        setOrders(data);
 
-      if (data.length > 0 && !selectedOrder) {
-        setSelectedOrder(data[0]);
+        if (data.length > 0 && !selectedOrder) {
+          setSelectedOrder(data[0]);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
     fetchOrder();
     const interval = setInterval(fetchOrder, 3000);
     return () => clearInterval(interval);
@@ -55,4 +54,4 @@ const OrderDashboard = () => {
   );
 };
 
-export default OrderDashboard;
+export default OrderPage;

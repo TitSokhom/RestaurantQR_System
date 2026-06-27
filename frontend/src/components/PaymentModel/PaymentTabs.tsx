@@ -1,4 +1,4 @@
-import { CreditCard, Wallet, QrCode, Building2, User2 } from "lucide-react";
+import { CreditCard, QrCode, User2 } from "lucide-react";
 import type { PaymentMethod } from "../../types/payment";
 
 interface Props {
@@ -9,9 +9,7 @@ interface Props {
 export default function PaymentTabs({ activeTab, setActiveTab }: Props) {
   const tabs = [
     { id: "card", label: "Card", icon: CreditCard },
-    { id: "wallets", label: "Wallet", icon: Wallet },
     { id: "upi_qr", label: "QR", icon: QrCode },
-    { id: "bank_qr", label: "Bank", icon: Building2 },
     { id: "cashier", label: "Cashier", icon: User2 },
   ];
 

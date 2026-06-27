@@ -1,6 +1,6 @@
-import type { Order } from "../../types/Order";
-import { printReceipt } from "../../utils/printReceipt";
-import Receipt80mm from "../receipt/Receipt80mm";
+import type { Order } from "../../../types/Order";
+import { printReceipt } from "../../../utils/printReceipt";
+import Receipt80mm from "../../../components/receipt/Receipt80mm";
 import OrderItemsList from "./OrderItemsList";
 
 interface Props {
@@ -67,7 +67,6 @@ const OrderSummaryCard = ({ order }: Props) => {
       </div>
       {/* Button */}
       <div className="p-4">
-        
         <button
           onClick={() => printReceipt("receipt")}
           className="w-full bg-emerald-700 text-white py-3 rounded-xl"
