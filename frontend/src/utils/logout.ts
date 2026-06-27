@@ -1,5 +1,5 @@
-export const logout = () => {
+export const logout = (navigate: any) => {
   localStorage.removeItem("token");
   localStorage.removeItem("role");
-  window.location.href = "/login";
+  navigate("/login", { replace: true });
 };

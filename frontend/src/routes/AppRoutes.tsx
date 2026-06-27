@@ -4,6 +4,7 @@ import AdminRoute from "./AdminRoute";
 import KitchenRoute from "./KitchenRoute";
 import CustomerRoute from "./CustomerRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
+import CashierRoute from "./CashierRoute";
 
 export default function AppRoutes() {
   return (
@@ -16,7 +17,7 @@ export default function AppRoutes() {
         <Route path="/admin/*" element={<AdminRoute />} />
         
         <Route path="/chef/*" element={<KitchenRoute />} />
-        <Route path="/cashier/*" element={<div>Cashier</div>} />
+        <Route path="/cashier/*" element={<CashierRoute/>} />
 
         {/* CUSTOMER */}
         <Route path="/menu/:tableId" element={<CustomerRoute />} />

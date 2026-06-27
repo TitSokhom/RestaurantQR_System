@@ -18,7 +18,7 @@ export default function AdminRoute() {
           <Route path="analysis" element={<AnalysisPage />} />
           <Route path="menu" element={<MenuPage />} />
           <Route path="tables" element={<TablePage />} />
-          <Route path="orders" element={<OrderPage />} />
+          <Route path="orders" element={<OrderPage /> } />
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="reports" element={<ReportPage />} />
           <Route path="settings" element={<SettingPage />} />
