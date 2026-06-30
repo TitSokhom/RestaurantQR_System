@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { getOrders, updateOrderStatus } from "../../services/orders.service";
 import type { Order } from "../../types/Order";
 
-import { CookingPot, CheckCircle, Clock, UtensilsCrossed } from "lucide-react";
+import { CookingPot, CheckCircle, Clock, UtensilsCrossed, LogOut } from "lucide-react";
+import { logout } from "../../utils/logout";
+import { useNavigate } from "react-router-dom";
 
 function KitchenPage() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +59,12 @@ function KitchenPage() {
       <div className="flex items-center gap-2 mb-4">
         <CookingPot className="text-orange-600" />
         <h1 className="text-2xl font-bold">Kitchen Display</h1>
+        <button 
+        onClick={()=>logout(navigate)}
+        className="flex items-center gap-2 text-red-500">
+          <LogOut size={18} />
+          Logout
+        </button>
       </div>
 
       {/* GRID */}

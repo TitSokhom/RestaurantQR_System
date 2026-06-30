@@ -116,18 +116,96 @@ export const getInvoice = async (orderId: string) => {
   };
 };
 
+// export const updateOrderStatus = async (
+//   orderId: string,
+//   status: OrderStatus,
+// ) => {
+//   return await prisma.order.update({
+//     where: {
+//       id: orderId,
+//     },
+//     data: {
+//       status,
+//     },
+//   });
+// };
+
+import { deductInventory } from "./inventory.service";
+
 export const updateOrderStatus = async (
   orderId: string,
   status: OrderStatus,
 ) => {
-  console.log("ID:", orderId);
-  console.log("STATUS:", status);
-  return await prisma.order.update({
-    where: {
-      id: orderId,
-    },
-    data: {
-      status,
-    },
+  return prisma.$transaction(async (tx) => {
+    // 1. Find Order
+    const order = await tx.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      include: {
+        items: {
+          include: {
+            food: {
+              include: {
+                ingredients: {
+                  include: {
+                    ingredient: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new Error("Order not found");
+    }
+
+    // 2. Prevent updating same status
+    if (order.status === status) {
+      throw new Error(`Order is already ${status}`);
+    }
+
+    // 3. Validate Status Flow
+    const validTransitions: Record<OrderStatus, OrderStatus[]> = {
+      PENDING: ["COOKING", "CANCELLED"],
+      COOKING: ["READY", "CANCELLED"],
+      READY: ["SERVED"],
+      SERVED: ["PAID"],
+      PAID: [],
+      CANCELLED: [],
+    };
+
+    const allowed = validTransitions[order.status];
+
+    if (!allowed.includes(status)) {
+      throw new Error(
+        `Cannot change status from ${order.status} to ${status}`,
+      );
+    }
+
+    // 4. Auto deduct inventory
+    if (status === OrderStatus.READY) {
+      await deductInventory(tx, order);
+    }
+
+    // 5. Update Status
+    const updatedOrder = await tx.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status,
+      },
+      include: {
+        table: true,
+        payment: true,
+        items: true,
+      },
+    });
+
+    return updatedOrder;
   });
 };

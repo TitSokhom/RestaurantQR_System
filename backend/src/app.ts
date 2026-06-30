@@ -8,7 +8,7 @@ import orderRoutes from "./routes/order.route";
 import tableRoutes from "./routes/table.route";
 import dashboardRoute from "./routes/dashboard.route";
 import paymentRoute from "./routes/payment.route";
-import path from "node:path";
+import inventoryRoutes from "./routes/inventory.route"
 
 const app = express();
 
@@ -30,10 +30,7 @@ app.use("/api/foods", foodRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/dashboard", dashboardRoute);
 app.use("/api/payments", paymentRoute);
+app.use("/api/inventory", inventoryRoutes);
 
-// app.use(
-//   "/uploads",
-//   express.static(path.join(process.cwd(), "uploads"))
-// );
 
 export default app;

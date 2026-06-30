@@ -5,25 +5,43 @@ import KitchenRoute from "./KitchenRoute";
 import CustomerRoute from "./CustomerRoute";
 import UnauthorizedPage from "./UnauthorizedPage";
 import CashierRoute from "./CashierRoute";
+import PublicRoute from "./PublicRoute";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
         {/* AUTH */}
-        <Route path="/login" element={<AuthPage mode="login" />} />
-        <Route path="/register" element={<AuthPage mode="register" />} />
+        {/* <Route path="/login" element={<AuthPage mode="login" />} />
+        <Route path="/register" element={<AuthPage mode="register" />} /> */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <AuthPage mode="login" />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <AuthPage mode="register" />
+            </PublicRoute>
+          }
+        />
         {/* ROLE ROUTES */}
         <Route path="/admin/*" element={<AdminRoute />} />
-        
+
         <Route path="/chef/*" element={<KitchenRoute />} />
-        <Route path="/cashier/*" element={<CashierRoute/>} />
+        <Route path="/cashier/*" element={<CashierRoute />} />
 
         {/* CUSTOMER */}
         <Route path="/menu/:tableId" element={<CustomerRoute />} />
 
         {/* ERROR */}
-        <Route path="/unauthorized" element={<UnauthorizedPage />} /> 
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
       </Routes>
     </BrowserRouter>
   );
